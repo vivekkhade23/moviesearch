@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            /* border: 1px solid red; */
+            width: 50%;
+            height: 500px;
+            border-radius: 15px;
+        }
+        img{
+            border-radius: 25px;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+        }
+        #poster{
+            /* border: 1px solid red; */
+            width: 30%;
+            height: 500px;
+        }
+        #poster>img{
+            width: 100%;
+            height: 500px;
+        }
+body{
+  color: white;
+    background-image: url("https://i0.wp.com/captaindroid.com/wp-content/uploads/2019/02/530968-cool-theater-backgrounds-1920x1080-for-xiaomi.jpg?fit=768%2C432&ssl=1");
+}
+#movies{
+    width: 195px;
+    height: 40px;
+    border-radius: 25px;
+margin-left: 560px;
+
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+#current1{
+    width: 125px;
+    height: 40px;
+    background-color: burlywood;
+    border-radius: 20px;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+    </style>
+</head>
+<body>
+   
+ <br>   <input type="text" id="movies">
+    <button onclick="getData()"id="current1">
+      Search movie
+    </button>
+   <div style="display: flex;justify-content: space-around; margin-left: 200px;">
+        <div id="poster">
+        </div>
+    <div id="container">
+        
+    </div>
+</div>
+</body>
+</html>
+<script>
+    
+    function getData(){
+    let movies=document.getElementById("movies").value;
+   
+
+    const url=` http://www.omdbapi.com/?apikey=ff0f339f&t=${movies}`
+    // http://www.omdbapi.com/?apikey=ff0f339f&t=${movies}
+    fetch(url)
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (res) {
+      append(res);
+    
+      console.log(res);
+    })
+    .catch(function (err) {
+
+      console.log(err);
+    
+      
+    });
+}
+
+
+function append(data){
+    let container=document.getElementById("container");
+ container.innerHTML= null;
+ let poster=document.getElementById("poster");
+ poster.innerText=null;
+ 
+ let img=document.createElement("img")
+ img.src=data.Poster;
+    let title =document.createElement("h2");
+    title.innerText=`Title- ${ data.Title}`;
+   
+
+    let Genre=document.createElement("p");
+    Genre.innerText=`Genre :-${data.Genre}`;
+
+    let rating =document.createElement("p");
+    rating.innerText=`Rating- ${ data.imdbRating}`;
+   
+
+    let Release=document.createElement("p");
+    Release.innerText=`Release :-${data.Released}`;
+
+    let plot =document.createElement("p");
+    plot.innerText=`plot- ${ data.Plot}`;
+   
+
+    let Language=document.createElement("p");
+    Language.innerText=`Language :-${data.Language}`;
+ 
+    if(data.imdbRating>=8.5){
+        let recommend=document.createElement("h3");
+        recommend.innerText="This movie is highly recommended"
+        recommend.style.color="red"
+        container.append(recommend)
+    }
+
+    poster.append(img)
+container.append( title,Genre ,rating,Release,Language,plot);
+if(data.Response=="False"){
+    poster.innerText=null;
+ let imgq=document.createElement("img")
+ imgq.src="https://i.pinimg.com/originals/70/ce/41/70ce41310f8a9c2a84e97b57198015d9.gif";
+ poster.append(imgq)
+
+
+
+}
+
+}
+</script>
